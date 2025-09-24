@@ -20,14 +20,14 @@ Optional bonus: **Docker containerization**.
 
 ## Project Structure
 reply_classification_project/
-├─ notebook.ipynb # Part A: ML/NLP Pipeline
-├─ app.py # Part B: FastAPI API
-├─ log_reg_model.pkl # Trained Logistic Regression model
-├─ tfidf_vectorizer.pkl # Trained TF-IDF vectorizer
-├─ requirements.txt # Python dependencies
-├─ Dockerfile # Optional Docker setup
-├─ answers.md # Reasoning / explanation answers
-└─ README.md # This file
+notebook.ipynb          # Part A: ML/NLP Pipeline
+app.py                  # Part B: FastAPI API
+log_reg_model.pkl       # Trained Logistic Regression model
+tfidf_vectorizer.pkl    # Trained TF-IDF vectorizer
+requirements.txt        # Python dependencies
+Dockerfile              # Optional Docker setup
+answers.md              # Reasoning / explanation answers
+README.md               # This file
 
 
 ---
