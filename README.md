@@ -1,163 +1,158 @@
-Reply Classification Project – SvaraAI
-Overview
-This project implements a reply classification pipeline for email replies in outbound sales. The goal is to classify replies into:
 
-positive → Interested in a demo/meeting
+```markdown
+# Reply Classification Project
 
-neutral → Non-committal or irrelevant
+This repository contains a **reply classification pipeline** to categorize email replies into `positive`, `negative`, or `neutral`. It includes:
 
-negative → Not interested / rejection
+- **Part A** – Machine Learning/NLP Pipeline
+- **Part B** – Deployment API (FastAPI)
+- **Part C** – Reasoning and answers (answers.md)
 
-The project consists of:
+---
 
-Part A – ML/NLP Pipeline (Notebook: notebook.ipynb)
+## **Project Structure**
 
-Part B – Deployment Task (API) (FastAPI code: app.py)
+```
 
-Part C – Reasoning answers (Markdown: answers.md)
+.
+├─ notebook.ipynb            # Part A & Part C code
+├─ app.py                    # FastAPI code for Part B
+├─ log\_reg\_model.pkl          # Trained Logistic Regression model
+├─ tfidf\_vectorizer.pkl       # TF-IDF vectorizer used for model
+├─ requirements.txt           # Python dependencies
+├─ Dockerfile                 # Optional Docker setup for Part B
+├─ answers.md                 # Reasoning answers for Part A/B
 
-Optional bonus: Docker containerization.
+````
 
-Project Structure
-reply_classification_project/
-├─ notebook.ipynb          # Part A: ML/NLP Pipeline
-├─ app.py                  # Part B: FastAPI API
-├─ log_reg_model.pkl       # Trained Logistic Regression model
-├─ tfidf_vectorizer.pkl    # Trained TF-IDF vectorizer
-├─ requirements.txt        # Python dependencies
-├─ Dockerfile              # Optional Docker setup
-├─ answers.md              # Reasoning / explanation answers
-└─ README.md               # This file
+---
 
+## **Setup Instructions**
 
-Part A – ML/NLP Pipeline
-Notebook: notebook.ipynb
+### **1️⃣ Clone Repository**
 
-Steps performed:
+```bash
+git clone <repository_url>
+cd <repository_folder>
+````
 
-Dataset Loading and Preprocessing
+---
 
-Loaded CSV dataset of email replies.
+### **2️⃣ Setup Python Environment**
 
-Dropped missing values.
+It is recommended to use a virtual environment:
 
-Cleaned text: lowercasing, removed URLs, non-alphabetic characters, extra spaces.
+```bash
+# Create virtual environment
+python -m venv venv
 
-Baseline Model – Logistic Regression
+# Activate virtual environment
+# Windows
+venv\Scripts\activate
+# Mac/Linux
+source venv/bin/activate
 
-TF-IDF vectorization on cleaned text.
-
-Trained Logistic Regression classifier.
-
-Performance:
-
-Accuracy: 0.998
-
-Macro F1-score: 0.998
-
-Balanced class-wise precision and recall.
-
-Transformer Model – DistilBERT (Optional)
-
-Fine-tuned distilbert-base-uncased using Hugging Face.
-
-On this small dataset, it did not outperform Logistic Regression.
-
-Model Evaluation
-
-Accuracy and macro F1 computed.
-
-Logistic Regression chosen as production-ready model due to simplicity, efficiency, and high performance.
-
-Part B – Deployment Task (API)
-File: app.py
-
-Features:
-
-FastAPI service with /predict endpoint.
-
-Input: JSON with text, e.g.
-
-{"text": "Looking forward to the demo!"}
-
-
-Output: JSON with predicted label and confidence, e.g.
-
-{"label": "positive", "confidence": 0.82}
-
-
-Run Locally (without Docker)
-Install dependencies:
-
+# Install dependencies
 pip install -r requirements.txt
+```
 
+---
 
-Run the API:
+### **3️⃣ Run Part A Notebook (Optional)**
 
+* Open `notebook.ipynb` in Jupyter Notebook or Colab.
+* Execute all cells to reproduce **ML pipeline, preprocessing, and evaluation results**.
+
+---
+
+### **4️⃣ Run FastAPI API (Part B)**
+
+#### **Option 1 – Locally without Docker**
+
+```bash
 uvicorn app:app --host 0.0.0.0 --port 8000
+```
 
+* The API will run at `http://127.0.0.1:8000`
+* Test endpoint:
 
-Test endpoint:
+```bash
+POST http://127.0.0.1:8000/predict
+Content-Type: application/json
 
+{
+  "text": "Looking forward to the demo!"
+}
+```
+
+* Expected response:
+
+```json
+{
+  "label": "positive",
+  "confidence": 0.82
+}
+```
+
+---
+
+#### **Option 2 – Using Docker (Optional Bonus)**
+
+1. Build Docker image:
+
+```bash
+docker build -t reply-api .
+```
+
+2. Run Docker container:
+
+```bash
+docker run -p 8000:8000 reply-api
+```
+
+3. API will run at `http://127.0.0.1:8000` (test same as above).
+
+---
+
+### **5️⃣ Test the API (Python Example)**
+
+```python
 import requests
 
-data = {"text": "Looking forward to the demo!"}
-response = requests.post("[http://127.0.0.1:8000/predict](http://127.0.0.1:8000/predict)", json=data)
+test_data = {"text": "Looking forward to the demo!"}
+response = requests.post("http://127.0.0.1:8000/predict", json=test_data)
 print(response.json())
+```
 
+* Example output:
 
-Run with Docker (Optional Bonus)
-Build Docker image:
+```json
+{"label": "positive", "confidence": 0.82}
+```
 
-docker build -t reply-api .
+---
 
+### **6️⃣ Notes**
 
-Run container:
+* Make sure `log_reg_model.pkl` and `tfidf_vectorizer.pkl` are in the same folder as `app.py`.
+* `Dockerfile` and `requirements.txt` are provided for containerized deployment.
+* The Logistic Regression + TF-IDF model is **production-ready** for this small dataset.
+* For larger datasets or more complex language patterns, transformer models can be explored.
 
-docker run -p 8000:8000 reply-api
+---
 
+### **7️⃣ References**
 
-Test endpoint (same as above).
+* [FastAPI Documentation](https://fastapi.tiangolo.com/)
+* [Scikit-learn Documentation](https://scikit-learn.org/stable/)
+* [Uvicorn Documentation](https://www.uvicorn.org/)
+* [Docker Documentation](https://docs.docker.com/)
 
-Note: If you get scikit-learn version warnings, ensure requirements.txt matches the version used to train the models.
+```
 
-Part C – Reasoning / Answers
-File: answers.md
+---
 
-Contains explanations for:
+This `README.md` is **ready-to-upload to GitHub**, formatted properly in Markdown, with all instructions to run both **Part A** and **Part B**, plus Docker.  
 
-Why Logistic Regression was chosen over transformers for production.
-
-Trade-offs in model complexity, performance, and deployment.
-
-Steps followed in preprocessing, modeling, and evaluation.
-
-Requirements
-Python packages (requirements.txt):
-
-fastapi
-uvicorn
-scikit-learn==1.6.1
-numpy
-pydantic
-
-
-scikit-learn==1.6.1 ensures compatibility with pickled models.
-
-Usage Notes
-Ensure log_reg_model.pkl and tfidf_vectorizer.pkl are in the same folder as app.py.
-
-API can run locally without Docker. Docker is optional for containerized deployment.
-
-Tested successfully in Colab and local environment.
-
-Contact / References
-Project implemented as part of SvaraAI ML assignment.
-
-References:
-
-Hugging Face Transformers: https://huggingface.co/docs/transformers
-
-FastAPI: https://fastapi.tiangolo.com/
-
-Scikit-learn: https://scikit-learn.org/
+If you want, I can also **prepare a `requirements.txt`** that locks scikit-learn to **1.6.1** to avoid any pickle warnings. Do you want me to do that too?
+```
