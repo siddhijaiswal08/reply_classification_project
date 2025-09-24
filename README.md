@@ -150,6 +150,3 @@ print(response.json())
 * [Docker Documentation](https://docs.docker.com/)
 
 ```
-
-
-
