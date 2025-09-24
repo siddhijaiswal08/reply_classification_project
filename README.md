@@ -150,9 +150,4 @@ print(response.json())
 
 ```
 
----
 
-This `README.md` is **ready-to-upload to GitHub**, formatted properly in Markdown, with all instructions to run both **Part A** and **Part B**, plus Docker.  
-
-If you want, I can also **prepare a `requirements.txt`** that locks scikit-learn to **1.6.1** to avoid any pickle warnings. Do you want me to do that too?
-```
